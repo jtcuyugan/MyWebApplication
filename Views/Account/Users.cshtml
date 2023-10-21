@@ -14,6 +14,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Gender</th>
+                <th>Role</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -31,12 +32,14 @@
                     <td>@Html.DisplayFor(m => i.FirstName)</td>
                     <td>@Html.DisplayFor(m => i.LastName)</td>
                     <td>@Html.DisplayFor(m => i.Gender)</td>
-                    <td><a href="#" class="lnkEdit" data-userid="@i.UserID" data-login="@i.LoginName" data-firstname="@i.FirstName" data-lastname="@i.LastName" data-gender="@i.Gender">Edit</a></td>
+                    <td>@Html.DisplayFor(m => i.RoleName)</td>
+                    <td><a href="#" class="lnkEdit" data-userid="@i.UserID" data-login="@i.LoginName" data-firstname="@i.FirstName" data-lastname="@i.LastName" data-gender="@i.Gender" data-role="@i.RoleID">Edit</a></td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
 <!-- The Modal -->
 <div class="modal fade edit-modal" tabindex="-1">
     <div class="modal-dialog">
@@ -62,7 +65,18 @@
                     </div>
                     <div class="form-group">
                         <label for="editGender">Gender:</label>
-                        <input type="text" class="form-control" id="editGender">
+                        <select class="form-control" id="editGender">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRole">Role:</label>
+                        <select class="form-control" id="editRole">
+                            <option value="1">Administrator</option>
+                            <option value="2">Member</option>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -85,6 +99,7 @@
         var editFirstName = $("#editFirstName");
         var editLastName = $("#editLastName");
         var editGender = $("#editGender");
+        var editRole = $("#editRole");
 
         // Click event for "Edit" links
         $(".lnkEdit").click(function () {
@@ -93,6 +108,7 @@
             var firstName = $(this).data("firstname");
             var lastName = $(this).data("lastname");
             var gender = $(this).data("gender");
+            var role = $(this).data("role");
 
             // Populate the modal with user data
             editId.val(userId);
@@ -100,6 +116,7 @@
             editFirstName.val(firstName);
             editLastName.val(lastName);
             editGender.val(gender);
+            editRole.val(role);
 
             // Show the modal
             editModal.modal("show");
@@ -114,6 +131,7 @@
                 FirstName: editFirstName.val(),
                 LastName: editLastName.val(),
                 Gender: editGender.val()
+                RoleID: editRole.val()
             };
 
             // Perform your update logic here (e.g., call an API or submit a form)
@@ -139,24 +157,59 @@
             editModal.modal("hide");
         });
 
-        // Click event for "Close" button
+// Click event for "Close" button
         $(".close-modal").click(function () {
             editModal.modal("hide");
         });
-    });
 
-    // Function to reload the user list
-    function reloadUserList() {
-        $.ajax({
-            type: "GET", // Use the appropriate HTTP method for fetching the user list
-            url: "/account/users", // Replace with your API endpoint URL to fetch the user list
-            success: function (data) {
-                // Replace the user list container with the updated user list HTML
-                userListContainer.html(data);
-            },
-            error: function (error) {
-                console.error("Error fetching user list:", error);
-            }
+        $("#reloadTable").click(function () {
+            reloadUserList();
         });
-    }
+
+        var loadingSpinner = $("#loadingSpinner"); // Reference to the loading spinner
+
+        // Click event for "Reload Table" button
+        $("#reloadTable").click(function () {
+            showLoadingSpinner(); // Show the loading spinner
+            reloadUserList();
+        });
+
+        // Function to show the loading spinner
+        function showLoadingSpinner() {
+            loadingSpinner.show();
+        }
+
+        // Function to hide the loading spinner
+        function hideLoadingSpinner() {
+            loadingSpinner.hide();
+        }
+
+        // Function to reload the user list
+        function reloadUserList() {
+            // Make an AJAX request to reload the user list
+            $.ajax({
+                type: "GET", // Use the appropriate HTTP method for fetching the user list
+                url: "/account/users", // Replace with your API endpoint URL to fetch the user list
+                success: function (data) {
+                    // Replace the user list container with the updated user list HTML
+                    var $response = $(data);
+                    var userListHtml = $response.find("#userListContainer tbody").html();
+
+                    // Replace the user list container with the extracted HTML
+                    $("#userListContainer tbody").html(userListHtml);
+                    hideLoadingSpinnerWithDelay(500); // Hide the loading spinner on success
+                },
+                error: function (error) {
+                    console.error("Error fetching user list:", error);
+                    hideLoadingSpinnerWithDelay(500); // Hide the loading spinner on error
+                }
+            });
+        }
+
+        function hideLoadingSpinnerWithDelay(delayMilliseconds) {
+            setTimeout(function () {
+                loadingSpinner.hide();
+            }, delayMilliseconds);
+        }
+    });
 </script>

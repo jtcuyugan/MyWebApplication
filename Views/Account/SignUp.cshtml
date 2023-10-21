@@ -1,4 +1,4 @@
-﻿@*
+﻿﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @model MyWebApplication.Models.ViewModel.UserModel
@@ -59,13 +59,16 @@
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.Gender, new List<SelectListItem> {
             new SelectListItem { Text="Male", Value="M" },
-            new SelectListItem { Text="Female", Value="F" }
+            new SelectListItem { Text="Female", Value="F" },
+            new SelectListItem { Text="Other", Value="O" }
             }, new { @class = "form-control" })
             </div>
         </div>
         <div class="row">
             <div style="margin: 16px; padding: 16px">
-                <input class="form-control form-control-lg" id="selectAvatar" type="file" />
+                <input class="form-control form-control-lg"
+                    id="selectAvatar"
+                    type="file" />
             </div>
             <div class="container">
                 <div class="row">
@@ -75,7 +78,7 @@
                     </div>
                     <div class="col">
                         <h6>Base64 Output</h6>
-                        <textarea id="textArea" name="ImageBase64" rows="30" cols="50"> </textarea>
+    @*                     <textarea id="textArea" name="ImageBase64" rows="30" cols="50"> </textarea> *@
                         <input type="hidden" id="hiddenImageBase64" name="AccountImage" value="" />
 
                     </div>

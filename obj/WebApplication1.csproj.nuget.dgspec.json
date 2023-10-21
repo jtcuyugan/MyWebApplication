@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj": {}
+    "D:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj": {}
   },
   "projects": {
-    "d:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj": {
+    "D:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj",
+        "projectUniqueName": "D:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj",
         "projectName": "WebApplication1",
-        "projectPath": "d:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj",
+        "projectPath": "D:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\WebApplication1.csproj",
         "packagesPath": "C:\\Users\\jamzy\\.nuget\\packages\\",
-        "outputPath": "d:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\obj\\",
+        "outputPath": "D:\\f i l e s\\codes\\school codes\\ENTJAVA\\MyWebApplication\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jamzy\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -40,19 +40,23 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[7.0.12, )"
             },
             "Microsoft.EntityFrameworkCore.Abstractions": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[7.0.12, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[7.0.12, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[7.0.12, )"
+            },
+            "Microsoft.Owin.Security.Cookies": {
+              "target": "Package",
+              "version": "[4.2.2, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",
