@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -7,7 +8,10 @@ namespace MyWebApplication.Models.ViewModel
     public class UserModel
     {
         [Key]
+        
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserID { get; set; }
+        public int ProfileID { get; set; }
         
         [Required(AllowEmptyStrings = true)]
         public string AccountImage { get; set; }

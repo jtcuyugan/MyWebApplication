@@ -26,6 +26,7 @@ namespace MyWebApplication.Models.EntityManager
                     PasswordEncryptedText = hashedPassword,
                     Salt = salt,
                     CreatedDateTime = DateTime.Now,
+                    ModifiedBy = 1,
                     ModifiedDateTime = DateTime.Now
                 };
  
@@ -36,8 +37,7 @@ namespace MyWebApplication.Models.EntityManager
  
                 Users newUser = new Users
                 {
-                    ProfileID = 0,
-                    UserID = newUserId,
+                    UserID = newUserId,
                     AccountImage = user.AccountImage,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -45,14 +45,13 @@ namespace MyWebApplication.Models.EntityManager
                     Address = user.Address,
                     PhoneNumber = user.PhoneNumber,
                     Gender = user.Gender,
-                    CreatedBy = newUserId,
+                    CreatedBy = 1,
                     CreatedDateTime = DateTime.Now,
                     ModifiedBy = 1,
                     ModifiedDateTime = DateTime.Now
                 };
- 
                 db.Users.Add(newUser);
-                 db.SaveChanges();
+                db.SaveChanges();
  
                 int roleId = db.Role.First(r => r.RoleName == "Member").RoleID;
  
@@ -69,7 +68,6 @@ namespace MyWebApplication.Models.EntityManager
  
                 db.UserRole.Add(userRole);
                 db.SaveChanges();
- 
             }
         }
 
@@ -107,12 +105,9 @@ namespace MyWebApplication.Models.EntityManager
             {
                 // Check if a user with the given login name already exists
                 SystemUsers existingSysUser = db.SystemUsers.FirstOrDefault(u => u.LoginName == user.LoginName);
-                if (existingSysUser != null)
-                {
-                    Users existingUser = db.Users.FirstOrDefault(u => u.UserID == existingSysUser.UserID);
+                Users existingUser = db.Users.FirstOrDefault(u => u.UserID == existingSysUser.UserID);
                     
-                    // if (existingSysUser != null && existingUser != null)
-                    if (existingUser != null)
+                    if (existingSysUser != null && existingUser != null)
                     {
                     // Auto increments the Modified By at every update
                     int currentModifiedBy = existingSysUser.ModifiedBy;
@@ -147,7 +142,6 @@ namespace MyWebApplication.Models.EntityManager
                    
                     db.SaveChanges();
                 }
-                }
                 else
                 {
                     // Add a new user since the user doesn't exist
@@ -212,6 +206,8 @@ namespace MyWebApplication.Models.EntityManager
                 list.Users = users.Select(records => new UserModel()
                 {
                     AccountImage = records.u.AccountImage ?? string.Empty,
+                    UserID = records.us.UserID,
+                    ProfileID = records.u.ProfileID,
                     LoginName = records.us.LoginName,
                     FirstName = records.u.FirstName,
                     LastName = records.u.LastName,
@@ -225,7 +221,6 @@ namespace MyWebApplication.Models.EntityManager
                     
                 }).ToList();
             }
- 
             return list;
         }
  

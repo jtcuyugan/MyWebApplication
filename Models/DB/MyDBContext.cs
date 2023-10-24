@@ -31,12 +31,12 @@ namespace MyWebApplication.Models.DB
             {
                 entity.ToTable("SYSUserProfile");
 
-                entity.Property(e => e.UserID)
-                .HasColumnName("SYSUserID")
-                .HasColumnType("int");
-
                 entity.Property(e => e.ProfileID)
                 .HasColumnName("SYSUserProfileID")
+                .HasColumnType("int");
+
+                entity.Property(e => e.UserID)
+                .HasColumnName("SYSUserID")
                 .HasColumnType("int");
                 
                 entity.Property(e => e.FirstName)
