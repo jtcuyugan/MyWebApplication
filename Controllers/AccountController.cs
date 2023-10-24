@@ -32,6 +32,15 @@ namespace MyWebApplication.Controllers
             return View(user);
         }
 
+        [AuthorizeRoles("Member")]
+        public ActionResult MyProfile()
+        {
+
+            UserManager um = new UserManager();
+            UsersModel user = um.GetAllUsers();
+            return View(user);
+        }
+
         [HttpPost]
         public ActionResult SignUp(UserModel user)
         {
@@ -69,43 +78,39 @@ namespace MyWebApplication.Controllers
         [HttpPost]
         public ActionResult LogIn(UserLoginModel ulm)
         {
-
             if (ModelState.IsValid)
             {
                 UserManager um = new UserManager();
+                string storedHashedPassword = um.GetUserPassword(ulm.LoginName);
 
-                if (string.IsNullOrEmpty(ulm.Password))
+                if (string.IsNullOrEmpty(storedHashedPassword) || string.IsNullOrEmpty(ulm.Password))
                 {
                     ModelState.AddModelError("", "The user login or password provided is incorrect.");
                 }
-                else
+                else if (BCrypt.Net.BCrypt.Verify(ulm.Password, storedHashedPassword))
                 {
-                    if (um.GetUserPassword(ulm.LoginName).Equals(ulm.Password))
-                    {
-                        var claims = new List<Claim>
+                    var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, ulm.LoginName)
                     };
 
-                        var userIdentity = new ClaimsIdentity(claims, "login");
+                    var userIdentity = new ClaimsIdentity(claims, "login");
 
-                        ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                    ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
 
-                        // Sign in the user using Cookie Authentication
-                        HttpContext.SignInAsync(principal);
+                    // Sign in the user using Cookie Authentication
+                    HttpContext.SignInAsync(principal);
 
-                        // Redirect to the desired action (e.g., "Users")
-                        return RedirectToAction("Users");
+                    // Redirect to the desired action (e.g., "Users")
+                    return RedirectToAction("MyProfile");
                     }
                     else
                     {
                         ModelState.AddModelError("", "The password provided is incorrect.");
                     }
                 }
-            }
-
-            // If authentication fails or ModelState is invalid, redisplay the login form
-            return View();
+                // If authentication fails or ModelState is invalid, redisplay the login form
+                return View();
         }
 
         [HttpPost]

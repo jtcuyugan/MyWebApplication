@@ -31,12 +31,12 @@ namespace MyWebApplication.Models.DB
             {
                 entity.ToTable("SYSUserProfile");
 
-                entity.Property(e => e.ProfileID)
-                .HasColumnName("SYSUserProfileID")
-                .HasColumnType("int");
-
                 entity.Property(e => e.UserID)
                 .HasColumnName("SYSUserID")
+                .HasColumnType("int");
+
+                entity.Property(e => e.ProfileID)
+                .HasColumnName("SYSUserProfileID")
                 .HasColumnType("int");
                 
                 entity.Property(e => e.FirstName)
@@ -47,6 +47,21 @@ namespace MyWebApplication.Models.DB
                 entity.Property(e => e.LastName)
                 .HasColumnName("LastName")
                 .HasMaxLength(50)
+                .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                .HasColumnName("Email")
+                .HasMaxLength(150)
+                .IsUnicode(false);
+
+                entity.Property(e => e.Address)
+                .HasColumnName("Address")
+                .HasMaxLength(255)
+                .IsUnicode(false);
+
+                entity.Property(e => e.PhoneNumber)
+                .HasColumnName("PhoneNumber")
+                .HasMaxLength(12)
                 .IsUnicode(false);
 
                 entity.Property(e => e.Gender)
@@ -85,6 +100,16 @@ namespace MyWebApplication.Models.DB
                 entity.Property(e => e.LoginName)
                 .HasColumnName("LoginName")
                 .HasMaxLength(50)
+                .IsUnicode(false);
+
+                entity.Property(e => e.PasswordEncryptedText)
+                .HasColumnName("PasswordEncryptedText")
+                .HasMaxLength(200)
+                .IsUnicode(false);
+
+                entity.Property(e => e.Salt)
+                .HasColumnName("Salt")
+                .HasMaxLength(128)
                 .IsUnicode(false);
 
                 entity.Property(e => e.CreatedBy)
