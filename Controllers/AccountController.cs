@@ -32,7 +32,7 @@ namespace MyWebApplication.Controllers
             return View(user);
         }
 
-        [AuthorizeRoles("Member")]
+        [AuthorizeRoles("Admin", "Member")]
         public ActionResult MyProfile()
         {
 
@@ -65,6 +65,8 @@ namespace MyWebApplication.Controllers
         [HttpPut]
         public async Task<ActionResult> Update([FromBody] UserModel userData)
         {
+            ModelState.Remove("Password");
+
             UserManager um = new UserManager();
             if (um.IsLoginNameExist(userData.LoginName))
             {

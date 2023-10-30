@@ -105,9 +105,11 @@ namespace MyWebApplication.Models.EntityManager
             {
                 // Check if a user with the given login name already exists
                 SystemUsers existingSysUser = db.SystemUsers.FirstOrDefault(u => u.LoginName == user.LoginName);
-                Users existingUser = db.Users.FirstOrDefault(u => u.UserID == existingSysUser.UserID);
+                if (existingSysUser != null)
+                {
+                    Users existingUser = db.Users.FirstOrDefault(u => u.ProfileID == existingSysUser.UserID);
                     
-                    if (existingSysUser != null && existingUser != null)
+                    if (existingUser != null)
                     {
                     // Auto increments the Modified By at every update
                     int currentModifiedBy = existingSysUser.ModifiedBy;
@@ -131,16 +133,9 @@ namespace MyWebApplication.Models.EntityManager
                     existingUser.Address = user.Address;
                     existingUser.PhoneNumber = user.PhoneNumber;
                     existingUser.Gender = user.Gender;
- 
-                    UserRole userRole = db.UserRole.FirstOrDefault(ur => ur.UserID == existingUser.UserID);
- 
-                    if (userRole != null)
-                    {
-                        userRole.LookUpRoleID = user.RoleID;
-                        db.UserRole.Update(userRole);
-                    }
                    
                     db.SaveChanges();
+                    }
                 }
                 else
                 {
@@ -217,8 +212,7 @@ namespace MyWebApplication.Models.EntityManager
                     Gender = records.u.Gender,
                     CreatedBy = records.u.CreatedBy,
                     RoleID = records.ur.LookUpRoleID,
-                    RoleName = records.r.RoleName
-                    
+                    RoleName = records.r.RoleName                
                 }).ToList();
             }
             return list;
